@@ -72,3 +72,41 @@ $('.permbutton').click( function( e ) {
 
 // ---- Assign unique ids to everything that doesn't have an ID ----
 $('#html-loc').find('*').uniqueId() 
+
+
+// STUDIO: CALLING THE define_new_effective_permissions FUNCTION FROM view_helper.js
+var new_permissions = define_new_effective_permissions("effective-permissions", true);
+
+$('#sidepanel').append(new_permissions);
+$('#effective-permissions').attr('filepath', '/C')
+$('#effective-permissions').attr('username', 'administrator')
+$('#effective-permissions').attr('filepath', '/C/presentation_documents/important_file.txt')
+
+var new_user = define_new_user_select_field("new-user-select", "new user", function(selected_user) {
+    $('#effective-permissions').attr('username', selected_user)
+
+ })
+
+$('#sidepanel').append(new_user);
+
+
+var new_dialog = define_new_dialog("new-dialog");
+
+$('.fa-info-circle').click(function(){
+    console.log('clicked!');
+    new_dialog.dialog('open');
+
+    var filepath = $('#effective-permissions').attr('filepath')
+    var username = $('#effective-permissions').attr('username')
+    console.log(filepath, username);
+    var icon = $(this)
+    var info = $(icon).attr('permission_name')
+
+
+    var allowed = allow_user_action(path_to_file[filepath], all_users[username], info, true)
+    var dialog_content = get_explanation_text(allowed)
+    $('#new-dialog').empty();
+    $('#new-dialog').append(dialog_content);
+
+
+})
